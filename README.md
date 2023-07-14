@@ -92,8 +92,23 @@ account = Account.first
 secret_key = account.api_secret_keys.create!
 # => <Api::SecretKey:0x00000001077190f0 id: 13, token: "[FILTERED]", account_id: 2, created_at: Fri, 14 Jul 2023 16:44:52.462608000 UTC +00:00, updated_at: Fri, 14 Jul 2023 16:44:52.462608000 UTC +00:00>
 secret_key.token
-# => "yLt4AM6S9RQK9Y1C6kYvJZ8w"
+# => "api_secret_key_yLt4AM6S9RQK9Y1C6kYvJZ8w"
 ```
+
+Someting to notice is the `"api_secret_key"` token prefix. `Restable::SecureToken` automatically adds this prefix by singularizing the table name. You can change the prefix by overriding the `secure_token_prefix` class method:
+
+```ruby
+class Api::SecretKey < ApplicationRecord
+  include Restable::SecureToken
+
+  def self.secure_token_prefix
+    # Generate tokens in the format "secret_key_yLt4AM6S9RQK9Y1C6kYvJZ8w"
+    "secret_key"
+  end
+end
+```
+
+You can disable the prefix by having `secure_token_prefix` return `nil`.
 
 Of course, because `Api::SecretKey` is just a normal Rails model, you can add whatever additional functionality you want to it, like an `expires_at` timestamp, a `created_by` attribute to track the user who generated the toke, etc. Or maybe your `Account` model should only have a single secret key, in which case you can specify `has_one :api_secret_key` instead of `has_many :api_secret_keys`.
 
