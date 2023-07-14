@@ -10,7 +10,7 @@ Rather that lock you into using a custom DSL or particular architecture, RestEas
 
 ### Planned Features
 
-- Management of **API Secrets** & generating **secure** tokens
+- ~Management of **API Secrets** & generating **secure** token~
 - **Authentication** with basic and bearer token
 - Consistent **error handling**
 - **JSON Serialization** of API resources using JBuilder
