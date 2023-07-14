@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_13_212609) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_14_161010) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,4 +21,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_13_212609) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "api_secret_keys", force: :cascade do |t|
+    t.string "token", null: false
+    t.bigint "account_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_api_secret_keys_on_account_id"
+    t.index ["token"], name: "index_api_secret_keys_on_token", unique: true
+  end
+
+  add_foreign_key "api_secret_keys", "accounts"
 end
