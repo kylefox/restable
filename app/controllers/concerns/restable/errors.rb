@@ -12,10 +12,13 @@ module Restable::Errors
     end
 
     def respond_with_not_found(exception)
-      render_error(
-        status: :not_found,
-        error: exception.message
-      )
+      error = if exception.id
+        "Couldn't find #{exception.model.downcase} with #{exception.primary_key} = #{exception.id}"
+      else
+        "Couldn't find #{exception.model.downcase}"
+      end
+
+      render_error(status: :not_found, error: error)
     end
 
     def respond_with_validation_error(exception)
